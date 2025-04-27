@@ -1,0 +1,27 @@
+# Ignorar entorno virtual de Python en el Backend
+AgroChapi_BackEnd/venv/
+AgroChapi_BackEnd/env/
+
+# Ignorar archivos de entorno (credenciales)
+AgroChapi_BackEnd/*.env
+AgroChapi_FrontEnd/.env
+
+# Ignorar archivos de caché de Python
+AgroChapi_BackEnd/__pycache__/
+AgroChapi_BackEnd/**/*.pyc
+
+# Ignorar carpeta de dependencias de NodeJS en el Frontend
+AgroChapi_FrontEnd/node_modules/
+
+# Ignorar la carpeta de build de React (opcional en desarrollo)
+AgroChapi_FrontEnd/build/
+
+# Archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de editores
+.vscode/
+
+# Logs
+*.log
