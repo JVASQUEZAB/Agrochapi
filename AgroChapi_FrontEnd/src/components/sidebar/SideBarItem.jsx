@@ -8,6 +8,7 @@ const SidebarItem = ({ item }) => {
 
   const hasChildren = item.children && item.children.length > 0;
 
+
   // Cierra los submenús si cambia la ruta
   useEffect(() => {
     setOpen(false);

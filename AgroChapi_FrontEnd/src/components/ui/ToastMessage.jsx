@@ -1,5 +1,4 @@
 import { toast } from 'react-hot-toast';
-// src/components/ui/ToastMessage.jsx
 import React from 'react';
 import { FaCheckCircle, FaExclamationTriangle, FaTimesCircle, FaSpinner, FaTimes } from 'react-icons/fa';
 

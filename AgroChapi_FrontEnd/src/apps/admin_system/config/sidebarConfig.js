@@ -19,62 +19,73 @@ export const accountsSidebarItems = [
     path: "/",
     children: [
       {
+        
         label: "Usuarios",
-        path: "/accounts/profile/",
+        path: "/admin/users/",
       },
       {
+        
         label: "Roles",
-        path: "/accounts/profile/",
+        path: "/admin/roles/",
       },
       {
+        
         label: "Calendario",
-        path: "/accounts/profile/",
+        path: "/admin/calendar/",
       },
       {
+        
         label: "Campañas",
-        path: "/accounts/profile/",
+        path: "/admin/campaign/",
       },
     ],
   },
   {
-    id: 3,
+    id: 7,
     label: "Actividades",
     path: "/",
     children: [
       {
+        
         label: "Actividades",
-        path: "/accounts/profile/",
+        path: "/admin/activities/",
       },
       {
+        
         label: "Labores",
-        path: "/accounts/profile/",
+        path: "/admin/works/",
       },
       {
+        
         label: "U. Medida",
-        path: "/accounts/profile/",
+        path: "/admin/u-m/",
       }
     ],
   },
   {
-    id: 4,
+    id: 11,
     label: "Maestros Agrícolas",
     path: "/",
     children: [
       {
+        
         label: "Fundos",
-        path: "/accounts/profile/",
+        path: "/admin/growers/",
       },
       {
+        
         label: "Cultivos",
-        path: "/accounts/profile/",
+        path: "/admin/crops/",
       },
       {
+        
         label: "Variedades",
-        path: "/accounts/profile/",
+        path: "/admin/varieties/",
       },
       {
+        
         label: "Consumidores",
-        path: "/accounts/profile/",
+        path: "/admin/consumers/",
       }
     ],
   },
