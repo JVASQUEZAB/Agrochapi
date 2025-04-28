@@ -116,7 +116,7 @@ const UsersPage = () => {
 
 
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#00000050]">
           <div className="bg-white p-6 rounded shadow-md w-96">
             <h2 className="text-xl font-bold mb-4 text-red-600">Confirmar Eliminación</h2>
             <p className="mb-4">¿Seguro que deseas eliminar a {selectedUser?.first_name} {selectedUser?.last_name}?</p>
@@ -139,9 +139,9 @@ const UsersPage = () => {
       )}
 
       <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Usuarios</h1>
+        <h1 className="text-xl font-semibold mb-4">Usuarios</h1>
         <table className="w-full table-auto border-collapse border border-gray-200">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 text-sm font-semibold text-gray-700">
             <tr>
               <th className="p-2 border border-gray-300">DNI</th>
               <th className="p-2 border border-gray-300">Nombre</th>
@@ -157,7 +157,7 @@ const UsersPage = () => {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
+              <tr key={user.id} className="hover:bg-gray-50 text-sm font-light">
                 <td className="p-2 border border-gray-300">{user.dni}</td>
                 <td className="p-2 border border-gray-300">{user.first_name}</td>
                 <td className="p-2 border border-gray-300">{user.last_name}</td>
