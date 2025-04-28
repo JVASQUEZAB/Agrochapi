@@ -1,44 +1,33 @@
-// src/apps/admin_system/services/UserService.js
-import API from '../../../api/axios'; // Asegúrate de tener importado correctamente el axios
+import API from '../../../api/axios';
+import { showToast } from '../../../lib/toast';
 
-
-export const getUsers = async (userData) => {
-    try {
-      const response = await API.get('/core/users/', userData);
-      return response.data;
-    } catch (error) {
-      console.error("Error al crear usuario", error);
-      throw error;
-    }
-  };
-
-export const createUser = async (userData) => {
+export const getUsers = async () => {
   try {
-    const response = await API.post('/core/users/', userData); // Suponiendo que la API esté configurada para crear usuarios
+    const response = await API.get('core/users/');
     return response.data;
   } catch (error) {
-    console.error("Error al crear usuario", error);
+    showToast('error', 'Error al cargar usuarios', error?.response?.data?.detail || 'Error desconocido');
     throw error;
   }
 };
 
-export const updateUser = async (userId, userData) => {
+export const deleteUser = async (id) => {
+try {
+    const response = await API.delete(`core/users/${id}/`);
+    return response.data;
+} catch (error) {
+  showToast('error', 'Error al cargar usuarios', error?.response?.data?.detail || 'Error desconocido');
+  throw error;
+}
+};
+
+// Opcional: editar usuario
+export const updateUser = async (id, data) => {
   try {
-    const response = await API.put(`/core/users/${userId}`, userData);
+    const response = await API.put(`core/users/${id}/`, data);
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar usuario", error);
+    showToast('error', 'Error al actualizar usuario', error?.response?.data?.detail || 'Error desconocido');
     throw error;
   }
 };
-
-export const deleteUser = async (userId) => {
-  try {
-    await API.delete(`/core/users/${userId}`);
-  } catch (error) {
-    console.error("Error al eliminar usuario", error);
-    throw error;
-  }
-};
-
-// Asegúrate de exportar las funciones que estás usando
