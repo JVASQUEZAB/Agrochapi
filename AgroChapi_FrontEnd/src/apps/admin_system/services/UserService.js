@@ -16,7 +16,7 @@ try {
     const response = await API.delete(`core/users/${id}/`);
     return response.data;
 } catch (error) {
-  showToast('error', 'Error al cargar usuarios', error?.response?.data?.detail || 'Error desconocido');
+  showToast('error', 'Error al eliminar el usuario', error?.response?.data?.detail || 'Error desconocido');
   throw error;
 }
 };
@@ -27,6 +27,7 @@ export const updateUser = async (id, data) => {
     const response = await API.put(`core/users/${id}/`, data);
     return response.data;
   } catch (error) {
+    console.error('Error al actualizar el usuario:', error.response?.data || error.message);
     showToast('error', 'Error al actualizar usuario', error?.response?.data?.detail || 'Error desconocido');
     throw error;
   }
