@@ -28,6 +28,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'last_name', 
             'email', 
             'role', 
+            'role_id',
             'is_active', 
             'is_staff', 
             'last_login', 

@@ -7,7 +7,7 @@ const UpdatePasswordForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      await API.post('core/users/me/', {
+      await API.post('account/me/', {
         current_password: data.currentPassword,
         new_password: data.newPassword,
         confirm_password: data.confirmPassword,

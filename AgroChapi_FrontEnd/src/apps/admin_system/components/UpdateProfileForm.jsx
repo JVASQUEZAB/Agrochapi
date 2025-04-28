@@ -9,7 +9,7 @@ const UpdateProfileForm = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await API.get('core/users/me/');
+        const response = await API.get('account/me/');
         reset(response.data);
       } catch (error) {
         console.error('Error al cargar usuario:', error);
@@ -20,7 +20,7 @@ const UpdateProfileForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      await API.put('core/users/me/', data);
+      await API.put('account/me/', data);
       alert('Datos actualizados correctamente');
     } catch (error) {
       console.error('Error al actualizar perfil:', error);

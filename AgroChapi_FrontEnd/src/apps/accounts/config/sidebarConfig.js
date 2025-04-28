@@ -13,10 +13,12 @@ export const accountsSidebarItems = [
     path: '',
     children: [
       {
+        
         label: "Actualizar datos",
         path: "/accounts/profile/"
       },
       {
+        
         label: "Información de la cuenta",
         path: "/accounts/profile-info/"
       },
