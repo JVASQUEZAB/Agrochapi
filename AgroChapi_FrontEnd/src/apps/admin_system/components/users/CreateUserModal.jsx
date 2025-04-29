@@ -12,6 +12,7 @@ const CreateUserModal = ({ isOpen, onClose, onUserCreated }) => {
     role: '',
   });
 
+  
   useEffect(() => {
     const fetchRoles = async () => {
       try {
@@ -42,29 +43,26 @@ const CreateUserModal = ({ isOpen, onClose, onUserCreated }) => {
   };
 
   const handleSubmit = async () => {
+    const payload = {
+      dni: formData.dni,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email || null,
+      role_id: formData.role,
+      password: formData.dni,
+      is_active: true,
+      is_staff: false,
+    };
+    
     try {
-      const payload = {
-        dni: formData.dni,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        email: formData.email || null,
-        role_id: formData.role,
-        password: formData.dni,
-        is_active: true,
-        is_staff: false,
-      };
-      console.log('Tipo de role:', typeof formData.role);
-      console.log('Payload:', payload); // Verifica el payload antes de enviarlo
-
-      await API.post('core/users/', payload);
-      if (onUserCreated) {
-        onUserCreated(); // Recarga lista de usuarios
-      }
+      await onUserCreated(payload); // 👈 usar función que recibe
       onClose();
     } catch (error) {
-      console.error('Error al crear usuario:', error);
+      console.error('Error al crear usuario desde el modal:', error);
+      // El error ya debería ser manejado por useUsers
     }
   };
+  
 
   return (
     <Modal 

@@ -1,64 +1,113 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { FaEdit } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
-
+import { FaEdit } from 'react-icons/fa';
+import { MdDeleteForever } from 'react-icons/md';
+import { MaterialReactTable } from 'material-react-table';
+import { Button } from '@mui/material';
 
 const UsersTable = ({ users, onEdit, onDelete, onCreate }) => {
+  
   const formatDate = (date) => date ? dayjs(date).format('DD-MMM') : '';
 
-  return (
-    <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
-            <h1 className="text-xl font-bold">Usuarios</h1>
-            <button 
-                onClick={() => onCreate(true)} 
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-            Crear Usuario
-            </button>
+  const columns = [
+    { accessorKey: 'dni', header: 'DNI' },
+    { accessorKey: 'first_name', header: 'Nombre' },
+    { accessorKey: 'last_name', header: 'Apellido' },
+    { accessorKey: 'email', header: 'Email' },
+    { accessorKey: 'role.name', header: 'Rol' },
+    { 
+      accessorKey: 'is_active', 
+      header: 'Activo',
+      Cell: ({ cell }) => (
+        <input type="checkbox" checked={cell.getValue()} readOnly />
+      )
+    },
+    { 
+      accessorKey: 'is_staff', 
+      header: 'Staff',
+      Cell: ({ cell }) => (
+        <input type="checkbox" checked={cell.getValue()} readOnly />
+      )
+    },
+    { 
+      accessorKey: 'last_login', 
+      header: 'Último Login',
+      Cell: ({ cell }) => formatDate(cell.getValue())
+    },
+    { 
+      accessorKey: 'date_joined', 
+      header: 'Fecha Registro',
+      Cell: ({ cell }) => formatDate(cell.getValue())
+    },
+    {
+      header: 'Acciones',
+      Cell: ({ row }) => (
+        <div className="flex gap-2 justify-center">
+          <Button 
+            size="small" 
+            variant="contained" 
+            color="primary" 
+            onClick={() => onEdit(row.original)}
+          >
+            <FaEdit size={16} />
+          </Button>
+          <Button 
+            size="small" 
+            variant="contained" 
+            color="error" 
+            onClick={() => onDelete(row.original)}
+          >
+            <MdDeleteForever size={18} />
+          </Button>
         </div>
-      <table className="w-full table-auto border-collapse border border-gray-200">
-        <thead className="bg-gray-100 text-sm font-semibold text-gray-700">
-          <tr>
-            <th className="p-2 border">DNI</th>
-            <th className="p-2 border">Nombre</th>
-            <th className="p-2 border">Apellido</th>
-            <th className="p-2 border">Email</th>
-            <th className="p-2 border">Rol</th>
-            <th className="p-2 border">Activo</th>
-            <th className="p-2 border">Staff</th>
-            <th className="p-2 border">Último Login</th>
-            <th className="p-2 border">Fecha Registro</th>
-            <th className="p-2 border">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id} className="hover:bg-gray-50 text-sm">
-              <td className="p-2 border">{user.dni}</td>
-              <td className="p-2 border">{user.first_name}</td>
-              <td className="p-2 border">{user.last_name}</td>
-              <td className="p-2 border">{user.email}</td>
-              <td className="p-2 border">{user.role?.name || ''}</td>
-              <td className="p-2 border text-center"><input type="checkbox" checked={user.is_active} readOnly /></td>
-              <td className="p-2 border text-center"><input type="checkbox" checked={user.is_staff} readOnly /></td>
-              <td className="p-2 border">{formatDate(user.last_login)}</td>
-              <td className="p-2 border">{formatDate(user.date_joined)}</td>
-              <td className="p-2 border gap-2 justify-center">
-                <div className='flex gap-2 justify-center'>
-                    <button onClick={() => onEdit(user)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                        <FaEdit className='text-sm'/>
-                    </button>
-                    <button onClick={() => onDelete(user)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                        <MdDeleteForever />
-                    </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      ),
+    }
+  ];
+
+  return (
+    <div className="p-2">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-bold">Usuarios</h1>
+        <button 
+          onClick={() => onCreate(true)} 
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Crear Usuario
+        </button>
+      </div>
+      <MaterialReactTable
+        columns={columns}
+        data={users}
+        enableGlobalFilter
+        muiTablePaperProps={{
+          elevation: 2,
+          sx: {
+            borderRadius: '5px',
+          },
+        }}
+        muiTableHeadCellProps={{
+          sx: {
+            backgroundColor: '#3b82f6',
+            color: '#fff',
+            fontWeight: 'light',
+          },
+        }}
+        muiTableBodyCellProps={{
+          sx: {
+            backgroundColor: '#f9fafb',
+          },
+        }}
+        initialState={{
+          pagination: { pageSize: 10 },
+          density: 'comfortable',
+          showGlobalFilter: true, // Mostrar barra de búsqueda
+        }}
+        muiSearchTextFieldProps={{
+          variant: 'outlined',
+          placeholder: 'Buscar...',
+          sx: { width: '300px' },
+        }}
+      />
     </div>
   );
 };

@@ -85,48 +85,52 @@ const EditUserModal = ({ isOpen, onClose, user, onSave }) => {
       onConfirm={handleSave}
     >
       <div className="space-y-4">
-        <input
-          name="first_name"
-          value={formData.first_name}
-          onChange={handleChange}
-          placeholder="Nombre"
-          className="input"
-        />
-        <input
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-          placeholder="Apellido"
-          className="input"
-        />
+        <div className='flex gap-4'>
+            <input
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+            placeholder="Nombre"
+            className="w-full px-3 py-2 border border-gray-300 rounded"
+            />
+            <input
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+            placeholder="Apellido"
+            className="w-full px-3 py-2 border border-gray-300 rounded"
+            />
+        </div>
         <input
           name="email"
           value={formData.email}
           onChange={handleChange}
           placeholder="Correo electrónico"
-          className="input"
+          className="w-full px-3 py-2 border border-gray-300 rounded"
         />
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              name="is_active"
-              checked={formData.is_active}
-              onChange={handleChange}
-            />
-            Activo
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              name="is_staff"
-              checked={formData.is_staff}
-              onChange={handleChange}
-            />
-            Es Staff
-          </label>
+        <div className='flex items-center ps-3'>
+            <div>
+            <label>
+                <input
+                type="checkbox"
+                name="is_active"
+                checked={formData.is_active}
+                onChange={handleChange}
+                />
+                Activo
+            </label>
+            </div>
+            <div>
+            <label>
+                <input
+                type="checkbox"
+                name="is_staff"
+                checked={formData.is_staff}
+                onChange={handleChange}
+                />
+                Es Staff
+            </label>
+            </div>
         </div>
         <div>
           <label>Rol</label>
@@ -134,7 +138,7 @@ const EditUserModal = ({ isOpen, onClose, user, onSave }) => {
             name="role_id"
             value={formData.role_id}
             onChange={handleChange}
-            className="input"
+            className="w-full px-3 py-2 border border-gray-300 rounded"
           >
             <option value="">Seleccione un rol</option>
             {roles.map((role) => (

@@ -12,7 +12,7 @@ const DeleteUserModal = ({ isOpen, onClose, user, onConfirm }) => {  // <-- agre
         confirmColor="red"
         onConfirm={() => onConfirm(user)}  // <-- PASAR onConfirm correctamente
     >
-      <div className="space-y-4">
+      <div className="space-y-4 text-red-500">
         <p>¿Seguro que deseas eliminar a <strong>{user?.first_name} {user?.last_name}</strong>?</p>
       </div>
     </Modal>

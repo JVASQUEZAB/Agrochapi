@@ -24,11 +24,23 @@ try {
 // Opcional: editar usuario
 export const updateUser = async (id, data) => {
   try {
-    const response = await API.put(`core/users/${id}/`, data);
+    const response = await API.patch(`core/users/${id}/`, data);
     return response.data;
   } catch (error) {
     console.error('Error al actualizar el usuario:', error.response?.data || error.message);
     showToast('error', 'Error al actualizar usuario', error?.response?.data?.detail || 'Error desconocido');
+    throw error;
+  }
+};
+
+
+export const createUser = async (data) => {
+  try {
+    const response = await API.post('core/users/', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear el usuario:', error.response?.data || error.message);
+    showToast('error', 'Error al crear usuario', error?.response?.data?.detail || 'Error desconocido');
     throw error;
   }
 };
