@@ -108,28 +108,28 @@ const EditUserModal = ({ isOpen, onClose, user, onSave }) => {
           placeholder="Correo electrónico"
           className="w-full px-3 py-2 border border-gray-300 rounded"
         />
-        <div className='flex items-center ps-3'>
+        <div className='flex items-center ps-3 gap 4'>
             <div>
-            <label>
-                <input
-                type="checkbox"
-                name="is_active"
-                checked={formData.is_active}
-                onChange={handleChange}
-                />
-                Activo
-            </label>
+              <label>
+                  <input
+                  type="checkbox"
+                  name="is_active"
+                  checked={formData.is_active}
+                  onChange={handleChange}
+                  />
+                  Activo
+              </label>
             </div>
             <div>
-            <label>
-                <input
-                type="checkbox"
-                name="is_staff"
-                checked={formData.is_staff}
-                onChange={handleChange}
-                />
-                Es Staff
-            </label>
+              <label>
+                  <input
+                  type="checkbox"
+                  name="is_staff"
+                  checked={formData.is_staff}
+                  onChange={handleChange}
+                  />
+                  Es Staff
+              </label>
             </div>
         </div>
         <div>

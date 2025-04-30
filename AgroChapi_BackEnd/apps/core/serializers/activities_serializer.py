@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models.activities import *
+from apps.core.models.activities import *
 
 
 # Serializers for the models in the activities module

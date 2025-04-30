@@ -10,6 +10,10 @@ export const useUsers = () => {
     setLoading(true);
     try {
       const response = await getUsers();
+  
+      // Simula un retraso solo para probar el loader
+      await new Promise((resolve) => setTimeout(resolve, 200));
+  
       setUsers(response);
     } catch (error) {
       console.error('Error al obtener usuarios:', error);

@@ -39,8 +39,6 @@ class Labor(models.Model):
 
 
 
-
-
 #Modelo de la tabla de Unidades de Medida para las labores
 # Este modelo representa las unidades de medida para las labores.
 class UMedida(models.Model):

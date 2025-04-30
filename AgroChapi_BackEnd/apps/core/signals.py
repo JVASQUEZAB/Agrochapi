@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 
-from core.models.login_register import LoginRegister
+from apps.core.models.login_register import LoginRegister
 
 @receiver(user_logged_in)
 def register_login(sender, request, user, **kwargs):

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from core.models import Role
-from core.serializers import RoleSerializer
+from apps.core.models import Role
+from apps.core.serializers import RoleSerializer
 
 class IsAdmin(permissions.BasePermission):
     """

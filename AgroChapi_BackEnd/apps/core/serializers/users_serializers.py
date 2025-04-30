@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models.users import CustomUser, Role
+from apps.core.models.users import CustomUser, Role
 
 
 #Serializers for Role model.
