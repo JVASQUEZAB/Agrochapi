@@ -2,6 +2,10 @@ import dayjs from 'dayjs';
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 import { Button } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export const getUserColumns = (onEdit, onDelete) => [
   { accessorKey: 'dni', header: 'DNI' },
@@ -40,13 +44,18 @@ export const getUserColumns = (onEdit, onDelete) => [
     id: 'actions',
     Cell: ({ row }) => (
       <div className="flex gap-2 justify-center">
-        <Button variant="contained" color="secondary" size="small" onClick={() => onEdit(row.original)}>
-          <FaEdit />
-        </Button>
-        <Button variant="contained" color="error" size="small" onClick={() => onDelete(row.original)}>
-          <MdDeleteForever />
-        </Button>
+        <Tooltip title="Editar Usuario">
+          <IconButton onClick={() => onEdit(row.original)} size="small">
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Eliminar Usuario">
+          <IconButton onClick={() => onDelete(row.original)} size="small" color="error">
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       </div>
     ),
+    size: 120,
   },
 ];

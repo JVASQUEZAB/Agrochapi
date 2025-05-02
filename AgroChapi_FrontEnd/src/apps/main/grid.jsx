@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import API from "../../api/axios"; // Ruta del archivo axios.jsx según donde se aloje la cabecera de conexión
-import modulesData from "../../api/modules.json"; // Importa el JSON directamente
+//import modulesData from "../../api/modules.json"; // Importa el JSON directamente
 
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate para redireccionar
 
@@ -9,7 +9,16 @@ const ModulesGrid = () => {
   const [modules, setModules] = useState([]);
 
   useEffect(() => {
-    setModules(modulesData);
+    const fetchModules = async () => {
+      try {
+        const response = await API.get("/core/modules/allowed/"); // ajusta la ruta si es diferente
+        setModules(response.data);
+      } catch (error) {
+        console.error("Error fetching allowed modules:", error);
+      }
+    };
+  
+    fetchModules();
   }, []);
 
   return (

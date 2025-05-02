@@ -24,7 +24,7 @@ const CustomTable = ({ columns, data, ...props }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ m: 0  }}>
+      <Box sx={{ m: 0 }}>
         <MaterialReactTable
           columns={columns}
           data={data}
@@ -36,40 +36,44 @@ const CustomTable = ({ columns, data, ...props }) => {
             size: 150,
             maxSize: 300,
           }}
-          
           muiTableContainerProps={{
             sx: {
               maxHeight: '70vh',
               overflowX: 'auto',
             },
           }}
-          enableColumnActions={false}
-          enableDensityToggle={false}
-          enableRowSelection= {false}
           muiTablePaperProps={{
             elevation: 2,
             sx: { borderRadius: '12px' },
           }}
-          
           muiTableHeadCellProps={{
             sx: {
               backgroundColor: '#f5f5f5',
-              fontWeight: 'semibold',
-              fontSize: 14,
+              fontWeight: '600',
+              fontSize: 13,
+              py: 0.5, // reduce altura en header
             },
           }}
           muiTableBodyCellProps={{
             sx: {
               fontSize: 12,
+              py: 0.5, // reduce padding vertical en celdas
             },
           }}
-          
-          {...props} // permite sobrescribir configuraciones
-          
+          muiTableBodyRowProps={{
+            sx: {
+              height: '38px', // altura total reducida
+            },
+          }}
+          enableColumnActions={false}
+          enableDensityToggle={false}
+          enableRowSelection={false}
+          {...props}
         />
       </Box>
     </ThemeProvider>
   );
 };
+
 
 export default CustomTable;

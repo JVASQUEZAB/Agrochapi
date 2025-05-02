@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 import HomeLayout from "../../layouts/HomeLayout";
-import Grid from "../../apps/main/Grid";
+import Grid from "../../apps/main/grid";
 import accountsRoutes from "../accountsRoutes/AccountsRoutes";
 import adminRoutes from "../adminRoutes/AdminRoutes";
 
