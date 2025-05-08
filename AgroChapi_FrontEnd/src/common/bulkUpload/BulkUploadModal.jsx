@@ -1,139 +1,93 @@
-import React, { useState } from 'react';
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
-
-import Modal from '../../components/ui/Modal';
-import BulkUploadTemplateButtons from './components/BulkUploadTemplateButtons';
-import BulkUploadFileInput from './components/BulkUploadFileInput';
-import BulkUploadInvalidRows from './components/BulkUploadInvalidRows';
-import BulkUploadSummary from './components/BulkUploadSummary';
+// src/common/bulkUpload/BulkUploadModal.jsx
+import React from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Divider,
+  Box,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import TemplateDownloadButtons from './components/TemplateDownloadButtons';
+import ExcelUploader from './components/ExcelUploader';
+import UploadSummary from './components/UploadSummary';
+import ActionButtons from './components/ActionButtons';
 
 const BulkUploadModal = ({
   isOpen,
   onClose,
-  templateHeaders = [],
-  existingData = [],
-  filename = 'plantilla',
+  title,
+  templateHeaders,
+  existingData,
+  filename,
+  validateTemplate,
   onSubmit,
-  validateRow,
-  mapRowToPayload,
-  title = 'Carga masiva'
 }) => {
-  const [uploadedRows, setUploadedRows] = useState([]);
-  const [validRows, setValidRows] = useState([]);
-  const [invalidRows, setInvalidRows] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [parsedData, setParsedData] = React.useState([]);
+  const [errors, setErrors] = React.useState([]);
+  const [file, setFile] = React.useState(null);
 
-  const resetState = () => {
-    setUploadedRows([]);
-    setValidRows([]);
-    setInvalidRows([]);
-    setErrorMessage('');
+  const handleFileUpload = async (file, data) => {
+    setFile(file);
+    const validationResults = await validateTemplate(data);
+    setParsedData(validationResults.validRows);
+    setErrors(validationResults.errors);
   };
 
-  const downloadTemplate = (withData = false) => {
-    const data = withData ? existingData : [];
-    const worksheet = XLSX.utils.json_to_sheet(
-      data.length ? data : [Object.fromEntries(templateHeaders.map(h => [h, '']))]
-    );
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Plantilla');
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(blob, `${filename}.xlsx`);
+  const handleReset = () => {
+    setFile(null);
+    setParsedData([]);
+    setErrors([]);
   };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      const bstr = evt.target.result;
-      const workbook = XLSX.read(bstr, { type: 'binary' });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const data = XLSX.utils.sheet_to_json(worksheet);
-
-      if (!data.length) {
-        setErrorMessage('El archivo está vacío.');
-        setUploadedRows([]);
-        setValidRows([]);
-        setInvalidRows([]);
-        return;
-      }
-
-      if (templateHeaders.length && !Object.keys(data[0] || {}).every(h => templateHeaders.includes(h))) {
-        setErrorMessage('Error en el archivo');
-        setUploadedRows(data);
-        setValidRows([]);
-        setInvalidRows([]);
-        return;
-      }
-
-      const valid = [];
-      const invalid = [];
-
-      data.forEach((row, i) => {
-        const { isValid, error } = validateRow(row);
-        if (isValid) {
-          valid.push(mapRowToPayload(row));
-        } else {
-          invalid.push({ row, error, index: i + 2 });
-        }
-      });
-
-      setUploadedRows(data);
-      setValidRows(valid);
-      setInvalidRows(invalid);
-      setErrorMessage('');
-    };
-    reader.readAsBinaryString(file);
-  };
-
-  const handleClose = () => {
-    resetState();
-    onClose();
-  };
-
-  const handleSubmit = () => {
-    if (validRows.length > 0) {
-      onSubmit(validRows);
-      handleClose();
+  const handleConfirmUpload = () => {
+    if (parsedData.length > 0) {
+      onSubmit(parsedData);
+      handleReset();
+      onClose();
     }
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={handleClose}
-      title={title}
-      onConfirm={handleSubmit}
-      confirmText="Subir datos"
-      cancelText="Cancelar"
-      confirmColor="blue"
-      size="max-w-xl"
-      confirmDisabled={validRows.length === 0}
-    >
-      <BulkUploadTemplateButtons
-        onDownloadEmpty={() => downloadTemplate(false)}
-        onDownloadWithData={() => downloadTemplate(true)}
-      />
+    <Dialog open={isOpen} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-semibold">{title}</span>
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+      </DialogTitle>
 
-      <BulkUploadFileInput
-        onFileUpload={handleFileUpload}
-        errorMessage={errorMessage}
-      />
+      <Divider />
 
-      <BulkUploadSummary
-        total={uploadedRows.length || 0}
-        valid={validRows.length || 0}
-        duplicated={0}
-        errors={invalidRows.length || (errorMessage ? uploadedRows.length : 0)}
-        showContent={uploadedRows.length > 0 || !!errorMessage}
-      />
+      <DialogContent>
+        <Box className="space-y-6 pt-4">
+          <TemplateDownloadButtons
+            headers={templateHeaders}
+            data={existingData}
+            filename={filename}
+          />
 
-      <BulkUploadInvalidRows invalidRows={invalidRows} />
-    </Modal>
+          <ExcelUploader onUpload={handleFileUpload} />
+
+          <UploadSummary validRows={parsedData} errors={errors} />
+        </Box>
+      </DialogContent>
+
+      <DialogActions className="px-6 pb-4">
+        <ActionButtons
+          onCancel={() => {
+            handleReset();
+            onClose();
+          }}
+          onConfirm={handleConfirmUpload}
+          disabled={!file}
+        />
+      </DialogActions>
+    </Dialog>
   );
 };
 

@@ -1,33 +1,36 @@
+// src/apps/admin_system/components/users/UserBulkUploadModal.jsx
 import React from 'react';
 import BulkUploadModal from '../../../../common/bulkUpload/BulkUploadModal';
+import { createValidateUserTemplate } from '../../../../common/bulkUpload/modules/admin/users/validateUserTemplate';
 
+const UserBulkUploadModal = ({ open, onClose, existingUsers, roles, onSubmit }) => {
+  // No renderizar si faltan datos necesarios
+  if (!existingUsers?.length || !roles?.length) return null;;
 
-const validateRow = (row) => {
-    // Ejemplo simple: puedes adaptarlo
-    if (!row.Nombre || !row.DNI || !row.Rol) {
-      return { isValid: false, error: 'Faltan campos obligatorios' };
-    }
-    return { isValid: true };
-  };
-  
-  const mapRowToPayload = (row) => ({
-    full_name: row.Nombre,
-    dni: row.DNI,
-    role: row.Rol,
-    // otros campos
-  });
+  // Extraemos DNIs existentes
+  const existingDnis = existingUsers.map(user => user.dni);
 
+  // Generamos función validadora
+  const validateTemplate = createValidateUserTemplate(existingDnis, roles);
 
-const UserBulkUploadModal = ({ open, onClose }) => (
-  <BulkUploadModal
-    isOpen={open}
-    onClose={onClose}
-    title="Carga masiva de usuarios"
-    templateHeaders={['DNI', 'Nombres', 'Apellidos', 'Rol', 'Email']}
-    validateRow={validateRow}
-    mapRowToPayload={mapRowToPayload}
-    filename="usuarios_template"
-  />
-);
+  return (
+    <BulkUploadModal
+      isOpen={open}
+      onClose={onClose}
+      title="Carga masiva de usuarios"
+      templateHeaders={['dni', 'first_name', 'last_name', 'email', 'role_name']}
+      existingData={existingUsers.map(user => ({
+        dni: user.dni,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        role_name: roles.find(r => r.id === user.role_id)?.name || '',
+      }))}
+      filename="usuarios"
+      validateTemplate={validateTemplate}
+      onSubmit={onSubmit}
+    />
+  );
+};
 
 export default UserBulkUploadModal;

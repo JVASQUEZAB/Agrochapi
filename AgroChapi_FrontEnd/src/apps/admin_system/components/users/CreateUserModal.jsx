@@ -1,39 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../../../../components/ui/Modal';
-import API from '../../../../api/axios';
+import { useRoles } from '../../hooks/useRoles'; // Usa tu hook de roles
+import { showToast } from '../../../../lib/toast';
+
+const initialForm = {
+  dni: '',
+  first_name: '',
+  last_name: '',
+  email: '',
+  role: '',
+};
 
 const CreateUserModal = ({ isOpen, onClose, onUserCreated }) => {
-  const [roles, setRoles] = useState([]);
-  const [formData, setFormData] = useState({
-    dni: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    role: '',
-  });
+  const { roles, fetchRoles } = useRoles();
+  const [formData, setFormData] = useState(initialForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  
   useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const response = await API.get('core/roles/');
-        setRoles(response.data);
-      } catch (error) {
-        console.error('Error al cargar roles:', error);
-      }
-    };
-
     if (isOpen) {
       fetchRoles();
-      setFormData({
-        dni: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        role: '',
-      });
+      setFormData(initialForm);
     }
-  }, [isOpen]);
+  }, [isOpen, fetchRoles]);
 
   const handleChange = (field, value) => {
     setFormData({
@@ -43,36 +31,44 @@ const CreateUserModal = ({ isOpen, onClose, onUserCreated }) => {
   };
 
   const handleSubmit = async () => {
+    const { dni, first_name, last_name, role } = formData;
+    if (!dni || !first_name || !last_name || !role) {
+      showToast('error', 'Por favor, complete todos los campos obligatorios');
+      return;
+    }
+
     const payload = {
-      dni: formData.dni,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
+      dni,
+      first_name,
+      last_name,
       email: formData.email || null,
-      role_id: formData.role,
-      password: formData.dni,
+      role_id: role,
+      password: dni,
       is_active: true,
       is_staff: false,
     };
-    
+
+    setIsSubmitting(true);
     try {
-      await onUserCreated(payload); // 👈 usar función que recibe
+      await onUserCreated(payload);
       onClose();
     } catch (error) {
       console.error('Error al crear usuario desde el modal:', error);
-      // El error ya debería ser manejado por useUsers
+    } finally {
+      setIsSubmitting(false);
     }
   };
-  
 
   return (
-    <Modal 
+    <Modal
       isOpen={isOpen}
       onClose={onClose}
       title="Crear Usuario"
       confirmText="Crear"
       cancelText="Cancelar"
       confirmColor="green"
-      onConfirm={handleSubmit} // <---- AQUÍ conectamos
+      onConfirm={handleSubmit}
+      loading={isSubmitting}
     >
       <div className="space-y-4">
         <input
@@ -104,7 +100,7 @@ const CreateUserModal = ({ isOpen, onClose, onUserCreated }) => {
           className="w-full px-3 py-2 border border-gray-300 rounded"
         />
         <select
-          value={formData.role}
+          value={formData.role || ''}
           onChange={(e) => handleChange('role', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded"
         >

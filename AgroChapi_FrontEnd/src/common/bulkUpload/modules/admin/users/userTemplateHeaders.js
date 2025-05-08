@@ -1,5 +1,3 @@
-// src/common/bulkUpload/modules/admin/users/userTemplateHeaders.js
-
 export const userTemplateHeaders = [
     { header: 'Dni', key: 'dni' },
     { header: 'Nombres', key: 'first_name' },

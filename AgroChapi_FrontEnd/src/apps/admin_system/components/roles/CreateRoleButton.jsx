@@ -7,7 +7,7 @@ const CreateRoleButton = ({ onClick }) => (
     onClick={onClick}
     icon={<GroupAddIcon />}
     text="Crear Rol"
-    color="secondary"
+    color="success"
   />
 );
 

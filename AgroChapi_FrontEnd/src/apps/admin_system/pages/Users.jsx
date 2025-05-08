@@ -1,5 +1,6 @@
 import React from 'react';
 import { useUsers } from '../hooks/useUsers';
+import { useRoles } from '../hooks/useRoles'; // <--- Asegúrate de tener este hook o algo equivalente
 import { Box } from '@mui/material';
 import UsersTable from '../components/users/UsersTable';
 import EditUserModal from '../components/users/EditUserModal';
@@ -7,7 +8,7 @@ import DeleteUserModal from '../components/users/DeleteUserModal';
 import CreateUserModal from '../components/users/CreateUserModal';
 import Spinner from '../../../components/common/Spinner';
 import CreateUserButton from '../components/users/CreateUserButton';
-import UserBulkUploadButton from '../components/users/UserBulkUploadButton';
+//import UserBulkUploadButton from '../components/users/UserBulkUploadButton';
 import UserBulkUploadModal from '../components/users/UserBulkUploadModal';
 
 const UsersPage = () => {
@@ -19,11 +20,13 @@ const UsersPage = () => {
     remove,
   } = useUsers();
 
+  const { loading: loadingRoles } = useRoles(); // <-- Obtén los roles
+
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
-  const [isBulkModalOpen, setIsBulkModalOpen] = React.useState(false);
+  //const [isBulkModalOpen, setIsBulkModalOpen] = React.useState(false);
 
   const openEditModal = (user) => {
     setSelectedUser(user);
@@ -45,12 +48,17 @@ const UsersPage = () => {
     setIsEditModalOpen(false);
     setIsDeleteModalOpen(false);
     setIsCreateModalOpen(false);
-    setIsBulkModalOpen(false);
+    //setIsBulkModalOpen(false);
   };
+
+  /*const handleBulkSubmit = async (data) => {
+    await Promise.all(data.map(user => create(user)));
+    closeModals();
+  };*/
 
   return (
     <>
-      {loading ? (
+      {loading || loadingRoles ? (
         <Spinner />
       ) : (
         <>
@@ -58,7 +66,7 @@ const UsersPage = () => {
             <h1 className="text-xl font-bold">Usuarios</h1>
             <Box display="flex" gap={2}>
               <CreateUserButton onClick={openCreateModal} />
-              <UserBulkUploadButton onClick={() => setIsBulkModalOpen(true)} />
+              {/* <UserBulkUploadButton onClick={() => setIsBulkModalOpen(true)} /> */}
             </Box>
           </div>
 
@@ -88,10 +96,15 @@ const UsersPage = () => {
             onUserCreated={(userData) => create(userData).then(closeModals)}
           />
 
+          {/*
           <UserBulkUploadModal
             open={isBulkModalOpen}
             onClose={closeModals}
-          />
+            existingUsers={users}
+            roles={roles}
+            onSubmit={handleBulkSubmit}
+            
+          /> */}
         </>
       )}
     </>

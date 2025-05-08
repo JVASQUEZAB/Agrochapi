@@ -15,8 +15,6 @@ class ProgramaMO(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Fecha"
     )
-    fundo = models.ForeignKey(Fundo, on_delete=models.PROTECT, verbose_name="Fundo")
-    cultivo = models.ForeignKey(Cultivo, on_delete=models.PROTECT, verbose_name="Cultivo")
     labor = models.ForeignKey(Labor, on_delete=models.PROTECT, verbose_name="Labor")
     consumidor = models.ForeignKey(Consumidor, on_delete=models.PROTECT, verbose_name="Consumidor")
     unidad_medida = models.ForeignKey(UMedida, on_delete=models.PROTECT, verbose_name="Unidad de Medida")
@@ -55,8 +53,6 @@ class ProgramaMO(models.Model):
         verbose_name_plural = "Programas MO"
         unique_together = (
             'fecha',
-            'fundo',
-            'cultivo',
             'labor',
             'consumidor',
             'unidad_medida',

@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from apps.core.models.activities import Actividad, Labor, UMedida
 from apps.core.serializers.activities_serializer import ActividadSerializer, LaborSerializer, UMedidaSerializer
 from apps.common.permissions import IsAdminUserOrReadOnly
+from apps.core.pagination import StandardResultsSetPagination
 
 
 
@@ -24,6 +25,7 @@ class LaborViewSet(viewsets.ModelViewSet):
     queryset = Labor.objects.all()
     serializer_class = LaborSerializer
     permission_classes = [IsAuthenticated, IsAdminUserOrReadOnly]
+    pagination_class = StandardResultsSetPagination
 
 
 class UMedidaViewSet(viewsets.ModelViewSet):

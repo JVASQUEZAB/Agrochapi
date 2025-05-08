@@ -10,14 +10,11 @@ export const useUsers = () => {
     setLoading(true);
     try {
       const response = await getUsers();
-  
-      // Simula un retraso solo para probar el loader
       await new Promise((resolve) => setTimeout(resolve, 200));
-  
       setUsers(response);
     } catch (error) {
-      console.error('Error al obtener usuarios:', error);
       showToast('error', 'Error al obtener usuarios');
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -29,7 +26,6 @@ export const useUsers = () => {
       showToast('success', 'Usuario creado correctamente');
       await fetchUsers();
     } catch (error) {
-      console.error('Error al crear usuario:', error);
       showToast('error', 'Error al crear usuario', error?.response?.data?.detail || 'Error desconocido');
     }
   };
@@ -40,7 +36,6 @@ export const useUsers = () => {
       showToast('success', 'Usuario actualizado correctamente');
       await fetchUsers();
     } catch (error) {
-      console.error('Error al actualizar usuario:', error);
       showToast('error', 'Error al actualizar usuario', error?.response?.data?.detail || 'Error desconocido');
     }
   };
@@ -51,7 +46,6 @@ export const useUsers = () => {
       showToast('success', 'Usuario eliminado correctamente');
       await fetchUsers();
     } catch (error) {
-      console.error('Error al eliminar usuario:', error);
       showToast('error', 'Error al eliminar usuario', error?.response?.data?.detail || 'Error desconocido');
     }
   };

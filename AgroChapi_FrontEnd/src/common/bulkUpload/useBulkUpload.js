@@ -19,6 +19,8 @@ export const useBulkUpload = (validateTemplate) => {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
 
+      console.log('Parsed JSON:', json);
+      
       const { validRows, errors } = await validateTemplate(json);
 
       setFileName(file.name);

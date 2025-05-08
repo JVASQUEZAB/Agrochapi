@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import API from '../../../api/axios';
+import { fetchPermissions, updatePermission } from '../services/permissionService';
 import { showToast } from '../../../lib/toast';
 
 export const usePermissionsMatrix = () => {
@@ -12,7 +12,7 @@ export const usePermissionsMatrix = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { data } = await API.get('core/permissions/modulespermission/');
+      const data = await fetchPermissions();
       setRawPermissions(data);
 
       const uniqueModules = Array.from(
@@ -36,8 +36,7 @@ export const usePermissionsMatrix = () => {
       setModules(uniqueModules);
       setRoles(matrix);
     } catch (error) {
-      console.error(error);
-      showToast('error', 'Error al cargar permisos');
+        console.log(error)// showToast ya está en el servicio
     } finally {
       setLoading(false);
     }
@@ -45,9 +44,7 @@ export const usePermissionsMatrix = () => {
 
   const handleCheckboxChange = (roleId, moduleId, newValue) => {
     const existing = rawPermissions.find((p) => p.role === roleId && p.module === moduleId);
-    const existingMod = modifiedPermissions.find(
-      (p) => p.role === roleId && p.module === moduleId
-    );
+    const existingMod = modifiedPermissions.find((p) => p.role === roleId && p.module === moduleId);
 
     let updated = [...modifiedPermissions];
 
@@ -65,7 +62,7 @@ export const usePermissionsMatrix = () => {
     }
 
     setModifiedPermissions(updated);
-    // actualizar roles localmente para feedback instantáneo
+
     setRoles((prev) =>
       prev.map((row) =>
         row.role === roleId
@@ -81,27 +78,17 @@ export const usePermissionsMatrix = () => {
   const saveChanges = async () => {
     setLoading(true);
     try {
-      await Promise.all(
-        modifiedPermissions.map((perm) =>
-          API.put(`core/permissions/modulespermission/${perm.id}/`, {
-            role: perm.role,
-            module: perm.module,
-            allowed: perm.allowed,
-          })
-        )
-      );
-  
+      await Promise.all(modifiedPermissions.map(updatePermission));
       showToast('success', 'Permisos asignados correctamente');
       await fetchData();
       setModifiedPermissions([]);
     } catch (error) {
-      console.error('Error al guardar cambios:', error);
-      showToast('error', 'Error al modificar permisos');
+        console.log(error)// Toast ya está en el servicio
     } finally {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);

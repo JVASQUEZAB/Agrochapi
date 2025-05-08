@@ -7,7 +7,7 @@ const SidebarGroup = ({ group }) => {
       <div className="text-gray-500 uppercase text-xs font-semibold px-4 py-2">{group.title}</div>
       <ul className="space-y-1">
         {group.items.map((item) => (
-          <li key={item.path}>
+          <li key={item.id}>
             <SidebarItem item={item} />
           </li>
         ))}

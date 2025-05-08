@@ -3,6 +3,7 @@ import ResponsiveActionButton from '../../../../components/ui/ResponsiveActionBu
 import { Upload } from 'lucide-react';
 
 const UserBulkUploadButton = ({ onClick }) => (
+  console.log('Boton de carga masiva clickeado'),
   <ResponsiveActionButton
     onClick={onClick}
     icon={<Upload size={16} />}
