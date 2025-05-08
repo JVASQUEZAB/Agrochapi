@@ -1,27 +1,24 @@
-import { FaHome } from 'react-icons/fa';
+import { GoHome } from "react-icons/go";
+import { CgProfile } from "react-icons/cg";
+
 
 export const accountsSidebarItems = [
   {
     id: 1,            // ID único para el elemento
     label: 'Home',      // Nombre del elemento
     path: '/',          // Ruta de la página de inicio
-    //icon: <FaHome />,   // Icono de Home
+    icon: GoHome,
   },
   {
     id: 2,
-    label: 'Cuenta', 
-    path: '',
-    children: [
-      {
-        
-        label: "Actualizar datos",
-        path: "/accounts/profile/"
-      },
-      {
-        
-        label: "Información de la cuenta",
-        path: "/accounts/profile-info/"
-      },
-    ]
+    label: 'Actualizar datos', 
+    path: '/accounts/profile',
+    icon: CgProfile,
+  },
+  {
+    id: 3,
+    label: 'Información', 
+    path: '/accounts/profile-info/',
+    icon: CgProfile,
   }
 ];

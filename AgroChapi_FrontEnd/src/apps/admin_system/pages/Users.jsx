@@ -1,28 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { getUsers } from '../services/UserService';
-import { showLoadingToast, dismissToast } from '../../../lib/toast';
+import React from 'react';
+import { useUsers } from '../hooks/useUsers';
+import { useRoles } from '../hooks/useRoles'; // <--- Asegúrate de tener este hook o algo equivalente
+import { Box } from '@mui/material';
 import UsersTable from '../components/users/UsersTable';
 import EditUserModal from '../components/users/EditUserModal';
 import DeleteUserModal from '../components/users/DeleteUserModal';
+import CreateUserModal from '../components/users/CreateUserModal';
+import Spinner from '../../../components/common/Spinner';
+import CreateUserButton from '../components/users/CreateUserButton';
+//import UserBulkUploadButton from '../components/users/UserBulkUploadButton';
+import UserBulkUploadModal from '../components/users/UserBulkUploadModal';
 
 const UsersPage = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const {
+    users,
+    loading,
+    create,
+    update,
+    remove,
+  } = useUsers();
 
-  useEffect(() => {
-    const loadUsers = async () => {
-      const loadingToastId = showLoadingToast('Cargando usuarios...');
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } finally {
-        dismissToast(loadingToastId);
-      }
-    };
-    loadUsers();
-  }, []);
+  const { loading: loadingRoles } = useRoles(); // <-- Obtén los roles
+
+  const [selectedUser, setSelectedUser] = React.useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
+  //const [isBulkModalOpen, setIsBulkModalOpen] = React.useState(false);
 
   const openEditModal = (user) => {
     setSelectedUser(user);
@@ -34,27 +38,75 @@ const UsersPage = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const openCreateModal = () => {
+    setSelectedUser(null);
+    setIsCreateModalOpen(true);
+  };
+
   const closeModals = () => {
     setSelectedUser(null);
     setIsEditModalOpen(false);
     setIsDeleteModalOpen(false);
+    setIsCreateModalOpen(false);
+    //setIsBulkModalOpen(false);
   };
 
-  const handleSaveEdit = (updatedUser) => {
-    console.log('Guardar cambios de', updatedUser);
+  /*const handleBulkSubmit = async (data) => {
+    await Promise.all(data.map(user => create(user)));
     closeModals();
-  };
-
-  const handleConfirmDelete = (userToDelete) => {
-    console.log('Eliminar a', userToDelete);
-    closeModals();
-  };
+  };*/
 
   return (
     <>
-      <UsersTable users={users} onEdit={openEditModal} onDelete={openDeleteModal} />
-      <EditUserModal isOpen={isEditModalOpen} onClose={closeModals} user={selectedUser} onSave={handleSaveEdit} />
-      <DeleteUserModal isOpen={isDeleteModalOpen} onClose={closeModals} user={selectedUser} onConfirm={handleConfirmDelete} />
+      {loading || loadingRoles ? (
+        <Spinner />
+      ) : (
+        <>
+          <div className="flex justify-between items-center mb-4 mx-8">
+            <h1 className="text-xl font-bold">Usuarios</h1>
+            <Box display="flex" gap={2}>
+              <CreateUserButton onClick={openCreateModal} />
+              {/* <UserBulkUploadButton onClick={() => setIsBulkModalOpen(true)} /> */}
+            </Box>
+          </div>
+
+          <UsersTable
+            users={users}
+            onEdit={openEditModal}
+            onDelete={openDeleteModal}
+          />
+
+          <EditUserModal
+            isOpen={isEditModalOpen}
+            onClose={closeModals}
+            user={selectedUser}
+            onSave={(userData) => update(userData.id, userData).then(closeModals)}
+          />
+
+          <DeleteUserModal
+            isOpen={isDeleteModalOpen}
+            onClose={closeModals}
+            user={selectedUser}
+            onConfirm={() => remove(selectedUser.id).then(closeModals)}
+          />
+
+          <CreateUserModal
+            isOpen={isCreateModalOpen}
+            onClose={closeModals}
+            onUserCreated={(userData) => create(userData).then(closeModals)}
+          />
+
+          {/*
+          <UserBulkUploadModal
+            open={isBulkModalOpen}
+            onClose={closeModals}
+            existingUsers={users}
+            roles={roles}
+            onSubmit={handleBulkSubmit}
+            
+          /> */}
+        </>
+      )}
     </>
   );
 };

@@ -1,12 +1,12 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from core.models.users import CustomUser
-from core.models.record_status import RecordStatus
-from core.models.calendar import Calendar
-from core.models.consumers import Fundo, Cultivo, Consumidor
-from core.models.activities import Labor
-from core.models.activities import UMedida
-from . import AreaResponsable
+from apps.core.models.users import CustomUser
+from apps.core.models.record_status import RecordStatus
+from apps.core.models.calendar import Calendar
+from apps.core.models.consumers import Fundo, Cultivo, Consumidor
+from apps.core.models.activities import Labor
+from apps.core.models.activities import UMedida
+from .areas import AreaResponsable
 
 #Modelo de la tabla de Programas de Mano de obra
 class ProgramaMO(models.Model):
@@ -15,8 +15,6 @@ class ProgramaMO(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Fecha"
     )
-    fundo = models.ForeignKey(Fundo, on_delete=models.PROTECT, verbose_name="Fundo")
-    cultivo = models.ForeignKey(Cultivo, on_delete=models.PROTECT, verbose_name="Cultivo")
     labor = models.ForeignKey(Labor, on_delete=models.PROTECT, verbose_name="Labor")
     consumidor = models.ForeignKey(Consumidor, on_delete=models.PROTECT, verbose_name="Consumidor")
     unidad_medida = models.ForeignKey(UMedida, on_delete=models.PROTECT, verbose_name="Unidad de Medida")
@@ -55,8 +53,6 @@ class ProgramaMO(models.Model):
         verbose_name_plural = "Programas MO"
         unique_together = (
             'fecha',
-            'fundo',
-            'cultivo',
             'labor',
             'consumidor',
             'unidad_medida',

@@ -1,22 +1,30 @@
-import { FaHome } from "react-icons/fa";
+import { GoHome } from "react-icons/go";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { GrSystem } from "react-icons/gr";
+import { FaTasks } from "react-icons/fa";
+import { GrGrow } from "react-icons/gr";
+
+
+
 
 export const accountsSidebarItems = [
   {
-    id: 0, // ID único para el elemento
-    label: "Home", // Nombre del elemento
+    id: 0,
+    label: "Home",
     path: "/", // Ruta de la página de inicio
-    //icon: <FaHome />,   // Icono de Home
+    icon: GoHome,   // Icono de Home
   },
   {
-    id: 1, // ID único para el elemento
-    label: "Admin Dashboard", // Nombre del elemento
+    id: 1,
+    label: "Admin Dashboard",
     path: "/admin/dashboard", // Ruta de la página de inicio
-    //icon: <FaHome />,   // Icono de Home
+    icon: AiOutlineDashboard,   // Icono de Home
   },
   {
     id: 2,
     label: "Sistema",
-    path: "/",
+    path: "Sistema",
+    icon: GrSystem,
     children: [
       {
         
@@ -43,7 +51,8 @@ export const accountsSidebarItems = [
   {
     id: 7,
     label: "Actividades",
-    path: "/",
+    path: "Actividades",
+    icon: FaTasks,
     children: [
       {
         
@@ -65,7 +74,8 @@ export const accountsSidebarItems = [
   {
     id: 11,
     label: "Maestros Agrícolas",
-    path: "/",
+    path: "masters",
+    icon: GrGrow,
     children: [
       {
         

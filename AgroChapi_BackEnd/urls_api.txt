@@ -1,9 +1,41 @@
 server:
     localhost:8000
     --------------------------------------------------------------------
-    /api/token/
-    /api/token/refresh/
-    --------------------------------------------------------------------
-    /api/core/users/me/
-    /api/core/master/fundos/
+    /api/token/                                                         ==> Endpoint para obtener el token de acceso
+    /api/token/refresh/                                                 ==> Endpoint para refrescar el token de acceso
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+----URLs de APIs registradas en app core.---------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+    /api/core/modules/allowed/                                          ==> Endpoint para renderizar los modulos permitidos segun rol.
+    /api/core/permissions/modulespermission/                            ==> Endpoint para renderizar y modificar Permisos (Solo Admin)
+
+
+    /api/core/users/                                                    ==> Endpoint para listas los usuarios
+    /api/core/roles/                                                    ==> Endpoint para listar los roles
+
+    /api/core/master/fundos/                                            ==> Endpoint para listar los fundos disponibles
+    /api/core/master/cultivos/                                          ==> Endpoint para listar los cultivos disponibles
+    /api/core/master/variedades/                                        ==> Endpoint para listar las variedades disponibles
+    /api/core/master/Consumidores/                                      ==> Endpoint para listar los consumidores disponibles
+    
+    /api/core/master/actividades/                                       ==> Endpoint para listar los fundos disponibles
+    /api/core/master/labores/                                           ==> Endpoint para listar los cultivos disponibles
+    /api/core/master/umedida/                                           ==> Endpoint para listar las variedades disponibles
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+----URLs de APIs registradas en app account.---------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+    /api/account/me/                                                    ==> Endpoint para informacion del usuario logueado
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+----URLs de APIs registradas en app agrochapi.---------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
     

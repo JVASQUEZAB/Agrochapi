@@ -1,2 +1,2 @@
-from .areas import *
-from .programas_mo import *
+from .areas import AreaResponsable
+from .programas_mo import ProgramaMO

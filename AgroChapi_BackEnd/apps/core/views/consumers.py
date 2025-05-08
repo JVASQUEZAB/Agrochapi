@@ -1,9 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from common.permissions import IsAdminUserOrReadOnly
+from apps.common.permissions import IsAdminUserOrReadOnly
 
-from core.models.consumers import Fundo, Cultivo, Variedad, Consumidor
-from core.serializers.consumers_serializer import FundoSerializer, CultivoSerializer, VariedadSerializer, ConsumidorSerializer
+from apps.core.models.consumers import Fundo, Cultivo, Variedad, Consumidor
+from apps.core.serializers.consumers_serializer import FundoSerializer, CultivoSerializer, VariedadSerializer, ConsumidorSerializer
 
 
 #Viewsets for the models in the consumers module

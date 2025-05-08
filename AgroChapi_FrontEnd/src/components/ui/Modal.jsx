@@ -1,5 +1,12 @@
 import React from 'react';
 
+const confirmButtonClasses = {
+  blue: "bg-blue-500 hover:bg-blue-600",
+  red: "bg-red-500 hover:bg-red-600",
+  green: "bg-green-500 hover:bg-green-600",
+  gray: "bg-gray-500 hover:bg-gray-600",
+};
+
 const Modal = ({
   isOpen,
   onClose,
@@ -7,7 +14,9 @@ const Modal = ({
   children,
   size = "max-w-lg",
   onConfirm,
-  confirmText = "Confirmar"
+  confirmText = "Confirmar",
+  cancelText = "Cancelar",
+  confirmColor = "blue",
 }) => {
   if (!isOpen) return null;
 
@@ -23,22 +32,21 @@ const Modal = ({
         </button>
         {children}
 
-        <div className="flex justify-end space-x-2 mt-6">
+        <div className="flex justify-center gap-2 mt-6">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
           >
-            Cancelar
+            {cancelText}
           </button>
-          {onConfirm && (
-            <button
-              onClick={onConfirm}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              {confirmText}
-            </button>
-          )}
+          <button
+            onClick={onConfirm}
+            className={`px-4 py-2 text-white rounded ${confirmButtonClasses[confirmColor] || confirmButtonClasses.blue}`}
+          >
+            {confirmText}
+          </button>
         </div>
+
       </div>
     </div>
   );

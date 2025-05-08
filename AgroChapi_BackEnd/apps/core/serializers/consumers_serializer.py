@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models.consumers import *
+from apps.core.models.consumers import *
 
 
 # Serializers for the models in the consumers module

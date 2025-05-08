@@ -5,12 +5,12 @@ from django.db import models
 # Este modelo representa las distintas actividades.
 
 class Actividad(models.Model):
-    codigo = models.CharField(max_length=3, unique=True)
+    codigo = models.CharField(max_length=3, unique=True, primary_key=True)
     descripcion = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'tb_actividades'
+        db_table = 'tb_actividad'
         verbose_name = 'Actividad'
         verbose_name_plural = 'Actividades'
         ordering = ['codigo']
@@ -23,21 +23,19 @@ class Actividad(models.Model):
 # Este modelo representa las labores a realizar con su respectiva relacion a la actividad correspondiente.
 
 class Labor(models.Model):
-    codigo = models.CharField(max_length=6, unique=True)
+    codigo = models.CharField(max_length=6, unique=True, primary_key=True)
     descripcion = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     codigo_actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tb_labores'
+        db_table = 'tb_labor'
         verbose_name = 'Labor'
         verbose_name_plural = 'Labores' 
         ordering = ['codigo']
 
     def __str__(self):
         return f"{self.codigo} {self.descripcion} {self.codigo_actividad} {self.codigo_actividad.descripcion}"
-
-
 
 
 

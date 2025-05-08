@@ -4,8 +4,12 @@ from django.utils.timezone import now
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
+from django.db.models.signals import post_save
 
-from core.models.login_register import LoginRegister
+
+
+from apps.core.models import Role, Module, RoleModulePermission
+from apps.core.models.login_register import LoginRegister
 
 @receiver(user_logged_in)
 def register_login(sender, request, user, **kwargs):
@@ -44,3 +48,14 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+
+
+@receiver(post_save, sender=Role)
+def create_permissions_for_new_role(sender, instance, created, **kwargs):
+    if created:
+        modules = Module.objects.all()
+        RoleModulePermission.objects.bulk_create([
+            RoleModulePermission(role=instance, module=module, allowed=False)
+            for module in modules
+        ])

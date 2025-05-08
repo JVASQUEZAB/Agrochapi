@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models.activities import *
+from apps.core.models.activities import *
 
 
 # Serializers for the models in the activities module
@@ -14,9 +14,21 @@ class ActividadSerializer(serializers.ModelSerializer):
 
 # Labores Model
 class LaborSerializer(serializers.ModelSerializer):
+    codigo_actividad = serializers.PrimaryKeyRelatedField(
+        queryset=Actividad.objects.all()
+    )
+    actividad_detalle = ActividadSerializer(source='codigo_actividad', read_only=True)
+
     class Meta:
         model = Labor
-        fields = '__all__'
+        fields = [
+            'codigo',
+            'descripcion',
+            'is_active',
+            'codigo_actividad',
+            'actividad_detalle',
+        ]
+
 
 
 class UMedidaSerializer(serializers.ModelSerializer):

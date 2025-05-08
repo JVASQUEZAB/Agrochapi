@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models.record_status import RecordStatus
+from apps.core.models.record_status import RecordStatus
 
 class RecordStatusSerializer(serializers.ModelSerializer):
     class Meta:
